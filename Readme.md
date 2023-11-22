@@ -1,3 +1,5 @@
+# MyArcade
+
 Lancer le programme Arcade :
 Lancez les règles de compilation games, graphicals & all du Makefile.
 Une fois cela fais nos librairies encapsulés se trouverons dans le dosser lib/

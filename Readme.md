@@ -1,84 +1,88 @@
-# MyArcade
+# **MyArcade**
 
-Lancer le programme Arcade :
-Lancez les règles de compilation games, graphicals & all du Makefile.
-Une fois cela fais nos librairies encapsulés se trouverons dans le dosser lib/
-./arcade ./[chemin vers une de nos librairie graphique].so
-_________________________________________________________________________________________________________________________________________________________________________
+Launch the Arcade program:
+Run the compilation rules for games, graphics, and all from the Makefile.
+Once this is done, our encapsulated libraries will be located in the **lib/** folder.
 
-Documentation utilisateur :
-Prise en main du programme Arcade :
-Le menu permet au joueur de rentrer son nom, de selectionner le jeux et la lib graphique, de voir les meilleurs scores comme dans une borne d'arcade.
-Commandes dans le menu :
-     Changer de jeux/ lib : flèches Droite et Gauche
-     Selectionner Jeux ou lib : flèches Haut et Bas
-     Lancer le jeu : Touche Entrée
-Options :
-	Changer de jeux : F3 et F4
-    Changer de librairie graphique : F1 et F2
-Options en jeu :
-	touche P : mettre en pause/reprendre le jeu
-	touche R : Reset le jeu
-	touche E : retour au menu
-	touche Echap : quitte la borne d'arcade
+bash
+`./arcade ./[path to one of our graphic libraries].so`
 
-Pacman : Commandes
-Directions :
-	flèche droite : tourner à droite
-	flèche gauche : tourner à gauche
-Pacman : Règles du jeu
-Dans ce jeu, vous controllerez l'emblématique Pac-Man. Le but du jeu est de récolter
-le plus de pac-gomme tout en évitant de se faire toucher par les fantômes. Votre score
-augmente proportionnellement au nombre de pac-gomme récolté.
-Quatres bonus sont présents à chaques coints du terrain.
-Récolter ces bonus vous permettra d'éliminer les fantômes qui réapparaitront dans leur
-base, avant de reprendre leur course après un court délais.
+---
 
-Nibbler : Commandes
-Directions :
-	flèche droite : tourner à droite
-	flèche gauche : tourner à gauche
-Touches Spéciales :
-	flèche haut : augmente la vitesse
-	flèche bas : diminue la vitesse
-Nibbler : Règles du jeu
-Vous incarner un serpent et vous devez manger le plus d'item présent sur la map.
-il existe deux types d'item : les points et les boissons (x2)
-L'orsque vous mangerez un item :
-	 -la taille du serpent augmente.
-	 -le score augmente.
-	 -la vitesse de jeu augmente.
-Plus la vitesse augmente, plus le gain en rammassant les items est grand.
-Attention, si la vitesse de jeu est trop faible, le joeur ne pourras pas gagner de points.
-La partie est finie l'orsque le serpent rentre dans un mur ou l'orsque qu'il se mange la queue.
+## **User Documentation**
 
-_________________________________________________________________________________________________________________________________________________________________________
+### **Getting Started with the Arcade Program:**
+The menu allows the player to enter their name, **select** the game and graphic library, and view the best scores as in an arcade machine.
 
-Documentation technique :
-Notre projet est divisé en 2 interfaces. Une pour la création de jeux "Games/IGames.hpp", une autre pour l'encapsulation de librairies graphiques "Display/IDisplay.hpp".
-Les Jeux Pacman.cpp et Nibbler.cpp on déjà été créer avec le model de IGames.
-Pour en créer un a votre tours vous aurez seulement a créer une classe héritant de IGames et de remplir les methodes suivantes :
-    - void update() : En fonction des Enumérateurs de type "Events" vous ferez bougez les différents éléments de votre jeu qui est sous la forme std::list<std::list<Map_Element>> _map. C'est cette fonction qui fera avancer le jeu.
-    - void reset() : cette fonction remettra a ses valeures de départ tout les eléments du jeu. Elle sera appelé lors d'un recommencement de partie.
-    - int getScore() :  cete fonction retournera le score qui peu être mis a jour dans la fonction update seln vos règles.
-    - std::list<std::list<Map_Element>> getMap() : cette fonction retourne la map de votre jeu soit votre liste d'éléments que vous mettez a jour dans update.
-    - void makeAction(Events event) : Cette fonction est uniquement appelé dans votre programme pour faire bouger votre personneage principal en fonction des énum Events (peux être appelé dans update).
-    - std::map<Map_Element, std::string> getAssets() : cette fonction retournera une list d'enumérateurs, accompagnés de leurs assets, leur texture, ou plutot le chemin vers chacun d'eux qui peeux être remplit dès le constructeur et modifié.
-    - bool isEnd() :  cette fonction retourne le booléan qui lorsque la partie est fine est a true, sinon il reste a false.
-N'oubliez pas de rajouter les .cpp de vos classes dans SRC_GAMES dans notre Makefile ainsi que la création de la lirairie partagée pour celle ci.
-Ainsi compilez avec la règle "make games" puis lancer le programme, puis selectionnez votre jeu.
+**Menu Commands:**
+- Change game/lib: Right and Left arrows
+- Select game or lib: Up and Down arrows
+- Launch the game: Enter key
 
-Quand aux interfaces graphiques 3 on était créeés. L'un qui encapsule la SDL2, une la Ncurse, et une la Sfml. Pour en créer un a votre tours vous aurez seulement a créer une classe héritant de IDisplay et de remplir les methodes suivantes :
-    - ~IDisplay() : dans votre destructeur vous devrez detruire toute les rescources créeés et nécessaires a l'affichage de votre librairie.
-    - void displayMenu(std::list<std::pair<std::string, bool>>std::list<std::pair<std::string, bool>>, Selected_Field) : cette fonction prends en argumment les listes de jeux .so et de librairie graphique .so disponibles ainsi que le chap selectionné en fonction des touches pressées.
-    - void displayMap(std::list<std::list<Map_Element>>) : Cette fonction sert uniquement a display la map sur votre ecran avec l'agrument que vous avez.
-    - void displayScore(int) : cette fonction affiche le score du jeu sur votre ecran donné en paramètre de la fonction
-    - void displayBestScores(std::list<std::string>) : cette fonction affiche la liste des meuilleurs scores du jeu sur votre ecran, toujours donné en paramètre de la fonction.
-    - void displayUserName(std::string) :  cette fonction affichae sur votre ecran le nom donné en paramètre.
-    - void displayEnd() : cette fonction estv appelé a la,fin du jeu et est utilisé pour afficher le menu game over par exmeple.
-    - void userNameSelection() : Cette fonction est appéelée au tout début du programme et affiche la selection du nom que va prendre le joeur pour sa partie.
-    - Events getLastInput() : cette fontion utilise la detection des touches de votre librairie graphique et retourne un énumérateur Events en fonction de l'actioin voulue. 
-    - void setAssets(std::map<Map_Element, std::string>) : cette fonction permet d'assigner des textures a l'avance avec la liste d'asset et de ses chemins du jeu. Pour ne pas avoir a créer une texture pour chaques affichages.
-    - std::string getUsername() : Cette fonction renvoie seulement le nom d'utilisateur qu'aura choisis le joeur apres être passé dans la methode "userNameSelection()".
-N'oubliez pas de rajouter les .cpp de vos classes dans SRC_LIBS dans notre Makefile ainsi que la création de la lirairie partagée pour celle ci.
-Ainsi compilez avec la règle "make graphical" puis lancer le programme.
+**Options:**
+- Change game: F3 and F4
+- Change graphic library: F1 and F2
+
+**In-Game Options:**
+- P key: pause/resume the game
+- R key: Reset the game
+- E key: return to the menu
+- Escape key: exit the arcade machine
+
+### **Pacman: Commands**
+**Directions:**
+- Right arrow: turn right
+- Left arrow: turn left
+
+**Pacman: Game Rules**
+In this game, you will **control** the iconic Pac-Man. The goal is to collect as many pac-dots while avoiding being touched by ghosts. Your score increases proportionally to the number of pac-dots collected. Four bonuses are present at each corner of the field. Collecting these bonuses allows you to eliminate the ghosts, which will reappear in their base before resuming their course after a short delay.
+
+### **Nibbler: Commands**
+**Directions:**
+- Right arrow: turn right
+- Left arrow: turn left
+
+**Special Keys:**
+- Up arrow: increase speed
+- Down arrow: decrease speed
+
+**Nibbler: Game Rules**
+You **embody** a snake, and you must eat as many items as possible on the map. There are two types of items: points and drinks (x2). When you eat an item:
+- The snake's size increases.
+- The score increase 
+- The game's speed increase
+The higher the speed, the greater the gain from collecting items.
+Be careful, if the game speed is too low, the player won't be able to earn any points.
+The game is over when the snake runs into a wall or eats its own tail.
+
+---
+
+# **Technical Documentation**
+
+Our project is divided into 2 interfaces. One for game creation "Games/IGames.hpp," another for encapsulating graphic libraries "Display/IDisplay.hpp." The games Pacman.cpp and Nibbler.cpp have already been created using the IGames model. To create your own, you only need to create a class inheriting from IGames and fill in the following methods:
+
+- `void update()`: Based on the "Events" enumerator, move the different elements of your game, which is in the form of `std::list<std::list<Map_Element>> _map`. This function drives the game forward.
+- `void reset()`: This function resets all elements of the game to their initial values and is called when restarting a game.
+- `int getScore()`: This function returns the score that can be updated in the `update` function according to your rules.
+- `std::list<std::list<Map_Element>> getMap()`: This function returns the map of your game, which is your list of elements that you update in `update`.
+- `void makeAction(Events event)`: This function is only called in your program to move your main character based on the Events enum (can be called in update).
+- `std::map<Map_Element, std::string> getAssets()`: This function returns a list of enumerators, accompanied by their assets, their texture, or rather the path to each of them, which can be filled in from the constructor and modified.
+- `bool isEnd()`: This function returns the boolean that is true when the game is over, otherwise it remains false.
+
+Don't forget to add the .cpp of your classes in SRC_GAMES in our Makefile as well as the creation of the shared library for it. So compile with the "make games" rule, then run the program, then select your game.
+
+As for the graphical interfaces, 3 have been created. One encapsulating SDL2, one Ncurses, and one SFML. To create your own, you only need to create a class inheriting from IDisplay and fill in the following methods:
+
+- `~IDisplay()`: In your destructor, you must destroy all the resources created and necessary for the display of your library.
+- `void displayMenu(std::list<std::pair<std::string, bool>>std::list<std::pair<std::string, bool>>, Selected_Field)`: This function takes as an argument the lists of .so games and graphic library available as well as the selected chap based on the pressed keys.
+- `void displayMap(std::list<std::list<Map_Element>>)`: This function is only used to display the map on your screen with the argument you have.
+- `void displayScore(int)`: This function displays the game score on your screen given as a parameter of the function.
+- `void displayBestScores(std::list<std::string>)`: This function displays the list of the best scores of the game on your screen, always given as a parameter of the function.
+- `void displayUserName(std::string)`: This function displays on your screen the name given as a parameter.
+- `void displayEnd()`: This function is called at the end of the game and is used to display the game over menu, for example.
+- `void userNameSelection()`: This function is called at the very beginning of the program and displays the selection of the name that the player will choose for his game.
+- `Events getLastInput()`: This function uses the detection of keys from your graphic library and returns an Events enumerator based on the desired action.
+- `void setAssets(std::map<Map_Element, std::string>)`: This function allows you to assign textures in advance with the list of assets and their paths from the game. So as not to have to create a texture for each display.
+- `std::string getUsername()`: This function only returns the username that the player will have chosen after going through the "userNameSelection()" method.
+
+Don't forget to add the .cpp of your classes in SRC_LIBS in our Makefile as well as the creation of the shared library for it. So compile with the "make graphical" rule, then run the program.
